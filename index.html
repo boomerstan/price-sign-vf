@@ -1,0 +1,108 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Sign Controller Prototype using VueJS 2.1 and Foundation 6.3.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <header class="text-center">
+        <h1 title="User configurable">Goodies Fuel Store</h1>
+        <div class="row">
+            <div class="columns large-8 medium-9 small-10 large-offset-2 medium-offset-1">
+                <p>Good food. Good drinks. Good gas.</p>
+            </div>
+        </div>
+    </header>
+    <main>
+        <h4 class="text-center">Quick Edit Dashboard</h4>
+        <form name="dashBoard" novalidate>
+            <div class="flex-container" style="justify-content: center;">
+                <div class="flex-item dash"
+                     v-for="(commodity, c) in commodities">
+                    <button href="#"
+                            class="button" tabindex="1"
+                            data-open="'commodityForm'+c"
+                            :title="'Go to price editing form for all price tiers for commodity: '+commodity.name"
+                            style="width: 7em;"
+                    >{{ commodity.name }}</button>
+                    <!--data-reveal-id={{'commodity'+c}}-->
+                    <input tabindex="1"
+                           type="number" min="0" max="9.99" step="0.01"
+                           v-model="commodity.price"
+                           @input="priceChange(commodity)"
+                           title="Direct change of price."
+                    >
+                    <div class="flex-item" v-for="(tier, t) in tiers">
+                        <div v-if="tier.id==0" class="priceGroup">
+                            <h6>{{ tier.name }}</h6>
+                            <div class="price"
+                                 :class="{ changed: commodity.priceChanged }"
+                                 :title="commodity.priceTitle"
+                            >{{ commodity.price.toFixed(2) }}</div>
+                        </div>
+                        <div v-if="tier.id>0" v-show="detail" class="priceGroup">
+                            <h6>{{ tier.name }}</h6>
+                            <div class="price"
+                                 :class="{ changed: commodity.priceChanged }"
+                                 :title="commodity.priceTitle"
+                            >{{ (commodity.price+commodity.tierDiffs[t]).toFixed(2) }}</div>
+                        </div>
+                    </div><!-- .priceGroup -->
+                </div><!-- .flex-item.commodity -->
+            </div><!--.flex-container-->
+        </form>
+        <h6 class="text-center">{{ signPriceState }}</h6>
+        <div class="flex-container" style="justify-content: center;">
+            <!-- display detail button if more than 1 tier-->
+            <button v-show="1 < tiers.length"
+                    class="button flex-item"
+                    tabindex="2" accesskey="1"
+                    @click="toggleDetail()"
+                    title="Button is only displayed if there is more than one price tier. Accesskey 1: Detail button"
+            >{{ detailText }}</button>
+            <button class="button flex-item"
+                    tabindex="2" accesskey="2"
+                    @click="resetPrices()"
+                    title="Reset the prices to state at last update and clear all unsaved changes. Accesskey 2: Reset button"
+            >Reset</button>
+            <button class="button flex-item"
+                    tabindex="2" accesskey="3"
+                    title="Changes are saved to sign. Accesskey 3: Update button"
+                    @click="updatePrices()"
+            >Update</button>
+        </div>
+        <!--# all modal windows are using foundation.js for conceal reveal and vuejs to populate data-->
+        <!--Update simulation modals        -->
+        <div class="reveal" id="sendPrices" data-reveal data-close-on-esc="false" data-close-on-click="false">
+            <h5>Prices submitted to signs.</h5>
+            <p>This could take several seconds...</p>
+            <p>(Simulated sign controller function.)</p>
+            <button class="close-button" data-open="pricesReceived" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="reveal" id="pricesReceived" data-reveal data-show-delay="1000">
+            <h5>Prices successfully updated on signs.</h5>
+            <p>(Simulated sign controller function.)</p>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </main>
+
+
+<script src="https://unpkg.com/vue@2.1.6/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/2.1.1/what-input.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/js/foundation.js"></script>
+<script src="js/app.js"></script>
+<script>
+    $(document).foundation();
+</script>
+
+</body>
+</html>
