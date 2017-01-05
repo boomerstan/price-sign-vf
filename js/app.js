@@ -10,6 +10,7 @@ new Vue({
         detail: false,
         detailText: "Show Price Tiers",
         signPrice: sames,
+        isActive: null,
 
         commodities: [
             {
@@ -74,17 +75,24 @@ new Vue({
     computed: {
         signPriceState: function () {
             return this.signPrice;
+        },
+        signState: function () {
+            return this.signPrice == diffs;
+        },
+        activeCommodity: function () {
+            return this.isActive
         }
     },
 
     mounted () {
         this.commodities.forEach(function(commodity) {
-            commodity.tierDiffsChange = [];
+            commodity.resetTierDiffs = [];
+            commodity.tierDiffsChanged = [];
             commodity.reset = commodity.price;
-            commodity.resetTierDiffs = commodity.tierDiffs;
             commodity.priceChanged = false;
-            commodity.tierDiffs.forEach(function () {
-                commodity.tierDiffsChange.push(false);
+            commodity.tierDiffs.forEach(function (value) {
+                commodity.resetTierDiffs.push(value);
+                commodity.tierDiffsChanged.push(false);
             });
         });
     },
@@ -100,20 +108,34 @@ new Vue({
                 commodity.tierDiffs = commodity.resetTierDiffs;
                 commodity.priceChanged = false;
                 commodity.priceTitle = same;
+                commodity.tierDiffsChanged = [];
+                commodity.tierDiffs.forEach(function (){
+                    commodity.tierDiffsChanged.push(false);
+                })
             });
             this.signPrice = sames;
         },
         priceChange: function (commodity) {
             commodity.priceChanged = commodity.price != commodity.reset;
-            commodity.priceTitle = commodity.priceChanged ?
-                diff :
-                same;
+            commodity.priceTitle = commodity.priceChanged ? diff : same;
             this.priceState();
+        },
+        diffChange: function (commodity, tier) {
+            commodity.tierDiffsChanged[tier] = commodity.tierDiffs[tier] != commodity.resetTierDiffs[tier];
+            commodity.priceTitle = commodity.tierDiffsChanged[tier] ? diff : same;
+            this.priceState();
+        },
+        setActive: function (index){
+            this.isActive = index;
+            $('#commodities-modal').foundation('open');
         },
         priceState: function () {
             let state = sames;
             this.commodities.forEach(function (commodity) {
                 if(commodity.priceChanged) state = diffs;
+                commodity.tierDiffsChanged.forEach(function (tier) {
+                    if(tier) state = diffs;
+                })
             });
             this.signPrice = state;
         },
@@ -123,6 +145,10 @@ new Vue({
                 commodity.resetTierDiffs = commodity.tierDiffs;
                 commodity.priceChanged = false;
                 commodity.priceTitle = same;
+                commodity.tierDiffsChanged = [];
+                commodity.tierDiffs.forEach(function (){
+                    commodity.tierDiffsChanged.push(false);
+                })
             });
             this.signPrice = sames;
             $('#sendPrices').foundation('open');

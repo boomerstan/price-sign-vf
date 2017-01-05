@@ -5,73 +5,29 @@ header {
     text-align: center;
     font: inherit;
 }
-.inner-wrap{
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-}
-.inner-wrap > footer{
-    flex: 1;
-}
 .flex-container {
     display: flex;
     flex-wrap: wrap;
     /*border: dashed 1px blue;*/
 }
-.flex-subGroup {
-    display: inline-flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    /*border: solid thin #000;*/
-}
 .flex-item {
     flex: 0 0 auto;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     /*border: dotted 1px green;*/
+}
+.flex-item.fg1 {
+    flex-grow: 1;
 }
 .flex-item.dash{
     max-width: 9em;
     margin-bottom: 1em;
-}
-.end {
-    align-self: flex-end
-}
-.display .commodity,
-.display .tier {
-    background-color: #ddd;
-    color: #333;
-    padding: .2em;
-    margin: 0;
-    border: #555 thin dashed;
-}
-.commodity {
-    background-color: #ddd;
-    color: #333;
-    padding: .2em;
-    margin: 0;
-    align-self: flex-start;
-    width: 100%;
-    border: #000 thin dashed;
-}
-.commodityGroup {
-    margin: 1 0 0;
 }
 button + button{
     margin-left: .5em;
 }
 .button {
     margin: 0 .2em 1em .2em;
-}
-.side-nav.right li {
-    float: right;
-    clear: both;
-}
-.side-nav h4 {
-    margin: 0 1em 0 .2em;
-}
-.button a {
-    color: white;
 }
 .priceGroup {
     background-color: white;
@@ -86,7 +42,7 @@ form[name="priceEditForm"] .priceGroup,
 .price {
     font-size: 2em;
     line-height: 1.8;
-//    padding: .5em .3em;
+    padding: 0 .3em;
 }
 .price::after {
     content: "9";
@@ -94,268 +50,6 @@ form[name="priceEditForm"] .priceGroup,
     position: relative;
     left: 0;
     top: -1em;
-}
-.tabs input.button {
-    margin: 3px 0 0 40px;
-}
-td.id {
-    position: relative;
-    top: .8em;
-}
-td.info {
-    position: relative;
-    top: -.5em;
-}
-/*footer {
-    position: fixed;
-    bottom: 0;
-    align-self: flex-end;
-    width: 100%;
-    padding: 1em;
-    border-color: #000;
-    border-width: thin;
-    border-style: dashed;
-}*/
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-}
-.controls input[type=time] {
-    width: 7rem;
-}
-.controls input[type=button] {
-    margin-top: 1.5rem;
-}
-.controls .flex-container {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-content: flex-end;
-    flex: 0 0 auto;
-}
-.controls .flex-container .flex-item {
-    flex: 0 0 auto;
-}
-.icon {
-    font-family: "foundation-icons";
-    font-size: 3rem;
-    color: #008cba;
-}
-.icon:hover {
-    color: #007095;
-}
-.tabs-content table {
-    margin-left: auto;
-    margin-right: auto;
-}
-.flex-preview {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-.item {
-    flex: 0 0 4em;
-}
-.tab-bar a {
-    color: white;
-    padding: 0 1rem;
-    display: inline-block;
-}
-.tab-bar a:hover {
-    font-weight: bold;
-}
-/**
-*
-* Sysmap
-*
-*/
-
-main.sysmap {
-    background-color: #607d8b;
-    height: auto;
-    width: auto;
-    margin: 0 2.5%;
-}
-main.sysmap h1,
-main.sysmap h2,
-main.sysmap h3,
-main.sysmap h4,
-main.sysmap h5,
-main.sysmap h6 {
-    text-align: center;
-}
-main.sysmap,
-.store,
-#store-direct,
-.direct-item,
-.store-remote,
-.remote-item,
-.team-group,
-.team,
-.sub-units {
-    display: flex;
-}
-main.sysmap,
-.direct-item,
-.remote-item,
-.team {
-    flex-direction: column;
-}
-main.sysmap,
-.direct-item,
-.remote-item {
-    justify-content: flex-start;
-    align-items: center;
-    /*
-    outline: solid 2px yellow;
-    outline-offset: 5px;
-    */
-}
-#store-direct,
-.store-remote,
-.team-group,
-.flex-container.row{
-    flex-direction: row;
-    margin-top: -7px;
-    /*
-    outline: solid 2px pink;
-    outline-offset: 5px;
-    */
-}
-.store {
-    justify-content: center;
-}
-.store .box {
-    align-self: center;
-}
-#store-direct {
-    justify-content: space-around;
-}
-.store-remote {
-    justify-content: space-between;
-    align-self: center;
-    /*	border: #fff thin solid;*/
-}
-.direct-item {
-    margin-left: .5em;
-    margin-right: .5em;
-}
-.store h4,
-.direct-item-group h4,
-.remote-item h4,
-.team h4 {
-    background-color: #bbb;
-    border: #555 thin solid;
-    width: 100%;
-    margin: 0 auto;
-}
-.box {
-    border: 2px solid #555;
-    border-radius: 50px 50px 50px 50px / 25px 25px 25px 25px;
-    /*margin-bottom: 1em;*/
-}
-.store .box {
-    margin-top: .5em;
-    background-color: #3f51b5;
-}
-.box.rnode {
-    background-color: #259b24;
-    margin: 5px auto 5rem;
-    flex: 0 1 auto;
-    align-self: center;
-    max-width: 12em;
-}
-.box.pbox {
-    background-color: #00bcd4;
-    margin-top: 5px;
-    margin-bottom: 5rem;
-}
-.box h4 {
-    background-color: #9e9e9e;
-    border-bottom: #555 thin solid;
-    border-radius: 46px 46px 0 0 / 21px 21px 0 0;
-    color: #212121;
-    line-height: 2;
-    padding: 0 1em;
-    width: auto;
-}
-.box a.name {
-    color: #ffffaa;
-    font-size: 1em;
-    padding:0 1em;
-    display: block;
-}
-.box a.name:hover {
-    color: #bbb;
-}
-.box a.map-menu {
-    color: #212121;
-    font-size: 1em;
-    display: block;
-    text-align: right;
-    padding-right: 2em;
-}
-.box a.map-menu:hover {
-    color: #bbb;
-}
-.store-link{
-    background-color: #e51c23;
-    color: #212121;
-    margin: 0 auto;
-    border: solid #e51c23 1px;
-}
-.store-link.vertical{
-    width: 3px;
-    min-height: 1em;
-}
-.direct-item .store-link.vertical{
-    position: relative;
-    top: 5px;
-}
-.store-link.horizontal{
-    text-align: center;
-    width: 100%;
-}
-.team {
-    justify-content: flex-start;
-    margin: 0 .5em;
-    background-color: #bbb;
-    border: #555 2px solid;
-}
-.team a {
-    padding: 0 .5em;
-}
-.team:hover {
-    background-color: #eee;
-}
-.display {
-    border-top: #555 2px solid;
-    background-color: #795548;
-    text-align: center;
-}
-.display a {
-    color: #ffffaa;
-}
-.team h4 {
-    border: none;
-    width: 150px;
-}
-.header {
-    font-weight: bold;
-}
-.columns.header:first-child {
-    text-align: right;
-}
-.columns.small-12.header:first-child {
-    text-align: left;
-}
-.odd {
-    background-color: #efefef;
-}
-.row.pad {
-    padding: .5em 0 0 0;
 }
 .good {
     background-color: #479090;
@@ -366,35 +60,4 @@ main.sysmap,
 .error {
     background-color: #FF523E;
     padding-left: 1em;
-}
-.map-menu {
-    line-height: 3;
-}
-.map-menu .disabled {
-    color: #666;
-}
-.align-to-input {
-    margin-top: .5em;
-}
-.align-to-input label {
-    padding-top: 1px;
-}
-.reveal-modal{
-    position: absolute;
-    top: 0;
-}
-input.ng-dirty.ng-invalid{
-    background-color: #FF523E;
-}
-input.ng-dirty.ng-valid,
-.changed{
-    background-color: #0DFFA7;
-    padding: 0 .5em;
-}
-.condition{
-    padding: 0 .5em;
-}
-
-[ng\:cloak], [ng-cloak], .ng-cloak {
-    display: none !important;
 }
