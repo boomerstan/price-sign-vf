@@ -25,7 +25,7 @@
                        :title="'Go to price editing form for all price tiers for commodity: '+commodity.name"
                        style="width: 7em;"
                        :data-open="commodity.name"
-                    >{{ commodity.name }}</a>
+                    v-text="commodity.name"></a>
                     <!--data-reveal-id={{'commodity'+c}}-->
                     <input type="number" min="0" max="9.99" step="0.01"
                            title="Edit price."
@@ -38,18 +38,18 @@
                         <div class="priceGroup"
                              v-if="tier.id==0"
                         >
-                            <h6>{{ tier.name }}</h6>
+                            <h6 v-text="tier.name"></h6>
                             <div class="price"
                                  :title="commodity.priceTitle"
-                            >{{ commodity.price.toFixed(2) }}</div>
+                            v-text="commodity.price.toFixed(2)"></div>
                         </div>
                         <div class="priceGroup"
                              v-if="tier.id>0"
                              v-show="detail"
                         >
-                            <h6>{{ tier.name }}</h6>
+                            <h6 v-text="tier.name"></h6>
                             <div class="price"
-                            >{{ (commodity.price+commodity.tierDiffs[t]).toFixed(2) }}</div>
+                            v-text="(commodity.price+commodity.tierDiffs[t]).toFixed(2)"></div>
                         </div>
                     </div><!-- .priceGroup -->
                 </div><!-- .flex-item.commodity -->
@@ -57,14 +57,14 @@
         </form>
         <h6 class="text-center"
             :class="{ caution: signState }"
-        >{{ signPriceState }}</h6>
+        v-text="signPriceState"></h6>
         <div class="flex-container" style="justify-content: center;">
             <button class="button secondary flex-item"
                     accesskey="1"
                     v-show="1 < tiers.length"
                     title="Button is only displayed if there is more than one price tier. Accesskey 1: Detail button"
                     @click="toggleDetail()"
-            >{{ detailText }}</button>
+            v-text="detailText"></button>
             <button class="button warning flex-item"
                     accesskey="2"
                     title="Reset the prices to state at last update and clear all unsaved changes. Accesskey 2: Reset button"
@@ -75,7 +75,7 @@
                     accesskey="3"
                     title="Changes are saved to sign. Accesskey 3: Update button"
                     :disabled="!signState"
-                    @click="updatePrices()"
+                    @click="sendPrices()"
             >Update Sign</button>
         </div>
         <!--# all modal windows are using foundation.js for conceal reveal and vue.js to populate data-->
@@ -127,11 +127,26 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             <h2 class="text-center">Edit&nbsp;Tier&nbsp;Prices&nbsp;Form</h2>
-            <h3 class="text-center">{{'Commodity: '+commodity.name}}</h3>
+            <h3 class="text-center" v-text="'Commodity: '+commodity.name"></h3>
+            <h6 class="text-center">This amount added to commodity base price.</h6>
             <form name="priceEditForm"
                   class="flex-container"
                   novalidate
             >
+                <div class="flex-item priceGroup fg1">
+                    <input id="baseprice"
+                           type="number" min="0" max="9.99" step="0.01"
+                           title="Edit base price"
+                           v-model="commodity.price"
+                           @input="priceChange(commodity)"
+                    >
+                    <label for="baseprice"
+                           class="text-center"
+                    >Base Price</label>
+                    <div class="price"
+                         :title="commodity.priceTitle"
+                         v-text="commodity.price.toFixed(2)"></div>
+                </div><!--.flex-item-->
                 <div class="flex-item priceGroup fg1"
                      v-for="(tier, t) in tiers">
                     <input :name="'price-tier'+t"
@@ -142,11 +157,11 @@
                     >
                     <label :for="'price-tier'+t"
                            class="text-center"
-                    >{{ tier.name }}</label>
+                    v-text="tier.name"></label>
                     <div class="price"
                          :class="{ changed: commodity.priceChanged }"
                          :title="commodity.priceTitle"
-                    >{{(commodity.price+commodity.tierDiffs[t]).toFixed(2)}}</div>
+                    v-text="(commodity.price+commodity.tierDiffs[t]).toFixed(2)"></div>
                 </div><!--.flex-item-->
             </form>
             <div class="flex-container" style="margin-top: 1em;">
@@ -156,16 +171,16 @@
                    v-show="tab.id != commodity.id"
                    :title="'Edit price tiers for commodity: '+tab.name"
                    :data-open="tab.name"
-                >{{ tab.name }}</a>
+                v-text="tab.name"></a>
             </div>
             <h6 class="text-center"
-                :class="{ caution: signState }">{{ signPriceState }}</h6>
+                :class="{ caution: signState }" v-text="signPriceState"></h6>
             <div class="flex-container" style="margin-top: 1em;">
                 <button class="button alert price-button flex-item fg1"
                         accesskey="1"
                         :disabled="!signState"
                         title="Price changes are not saved until the Update Sign button is clicked here or back on the Sign Edit Dashboard."
-                        @click="updatePrices()"
+                        @click="updateSign(commodity.name)"
                 >Update Sign</button>
                 <button class="button warning price-button flex-item fg1"
                         accesskey="2"

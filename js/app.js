@@ -10,7 +10,6 @@ new Vue({
         detail: false,
         detailText: "Show Price Tiers",
         signPrice: sames,
-        isActive: null,
 
         commodities: [
             {
@@ -18,55 +17,52 @@ new Vue({
                 name: 'Unleaded',
                 price: 1.85,
                 priceTitle: same,
-                tierDiffs: [ 0, 0, 0.05, 0.08, -0.03 ]
+                tierDiffs: [ 0, 0.05, 0.08, -0.03 ]
             },
             {
                 id: 1,
                 name: 'Midgrade',
                 price: 1.94,
                 priceTitle: same,
-                tierDiffs: [ 0, 0, 0.05, 0.08, -0.03 ]
+                tierDiffs: [ 0, 0.05, 0.08, -0.03 ]
             },
             {
                 id: 2,
                 name: 'Premium',
                 price: 2.06,
                 priceTitle: same,
-                tierDiffs: [ 0, 0, 0.05, 0.08, -0.03 ]
+                tierDiffs: [ 0, 0.05, 0.08, -0.03 ]
             },
             {
                 id: 3,
                 name: 'Flexfuel',
                 price: 1.55,
                 priceTitle: same,
-                tierDiffs: [ 0, 0, 0.05, 0.08, -0.03 ]
+                tierDiffs: [ 0, 0.05, 0.08, -0.03 ]
             },
             {
                 id: 4,
                 name: 'Diesel',
                 price: 2.75,
                 priceTitle: same,
-                tierDiffs: [ 0, 0, 0.05, 0.08, -0.03 ]
-            }],
+                tierDiffs: [ 0, 0.05, 0.08, -0.03 ]
+            }
+        ],
         tiers: [
             {
                 id: 0,
-                name: "Base Price",
-            },
-            {
-                id: 1,
                 name: "Cash Price",
             },
             {
-                id: 2,
+                id: 1,
                 name: "Debit Price",
             },
             {
-                id: 3,
+                id: 2,
                 name: "Credit Price",
             },
             {
-                id: 4,
+                id: 3,
                 name: "Loyalty Price",
             }
         ]
@@ -78,9 +74,6 @@ new Vue({
         },
         signState: function () {
             return this.signPrice == diffs;
-        },
-        activeCommodity: function () {
-            return this.isActive
         }
     },
 
@@ -105,7 +98,11 @@ new Vue({
         resetPrices: function () {
             this.commodities.forEach(function (commodity){
                 commodity.price = commodity.reset;
-                commodity.tierDiffs = commodity.resetTierDiffs;
+                commodity.resetTierDiffs.forEach(function (tier, index) {
+                    if(tier!=commodity.tierDiffs[index]){
+                        commodity.tierDiffs[index] = commodity.resetTierDiffs[index]
+                    }
+                })
                 commodity.priceChanged = false;
                 commodity.priceTitle = same;
                 commodity.tierDiffsChanged = [];
@@ -113,7 +110,7 @@ new Vue({
                     commodity.tierDiffsChanged.push(false);
                 })
             });
-            this.signPrice = sames;
+            this.priceState();
         },
         priceChange: function (commodity) {
             commodity.priceChanged = commodity.price != commodity.reset;
@@ -124,10 +121,6 @@ new Vue({
             commodity.tierDiffsChanged[tier] = commodity.tierDiffs[tier] != commodity.resetTierDiffs[tier];
             commodity.priceTitle = commodity.tierDiffsChanged[tier] ? diff : same;
             this.priceState();
-        },
-        setActive: function (index){
-            this.isActive = index;
-            $('#commodities-modal').foundation('open');
         },
         priceState: function () {
             let state = sames;
@@ -142,7 +135,11 @@ new Vue({
         updatePrices: function () {
             this.commodities.forEach(function (commodity) {
                 commodity.reset = commodity.price;
-                commodity.resetTierDiffs = commodity.tierDiffs;
+                commodity.resetTierDiffs.forEach(function (tier, index) {
+                    if(tier!=commodity.tierDiffs[index]){
+                        commodity.resetTierDiffs[index] = commodity.tierDiffs[index]
+                    }
+                })
                 commodity.priceChanged = false;
                 commodity.priceTitle = same;
                 commodity.tierDiffsChanged = [];
@@ -150,8 +147,16 @@ new Vue({
                     commodity.tierDiffsChanged.push(false);
                 })
             });
-            this.signPrice = sames;
-            $('#sendPrices').foundation('open');
+            this.priceState();
+        },
+        /* foundation specific methods */
+        sendPrices: function () {
+            $('#sendPrices').foundation('open')
+            this.updatePrices()
+        },
+        updateSign: function (modal){
+            $('#'+modal).foundation('close')
+            this.sendPrices()
         }
     }
 });
